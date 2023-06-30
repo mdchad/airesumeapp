@@ -37,6 +37,7 @@ export function DataTableRowActions<TData>({
 		try {
 			const response = await fetch('/delete', {
 				method: 'POST',
+				// @ts-ignore
 				body: JSON.stringify(row.original.id)
 			});
 

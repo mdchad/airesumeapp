@@ -33,13 +33,14 @@ export function DataTableToolbar<TData>({
 
 	const selected = table.getRowModel().rows.map((row) => {
 		if (row.getIsSelected()) {
+			// @ts-ignore
 			return row.original.id
 		}
 		return null
 	})
 
-	async function add(index) {
-		let copyData = [...data]
+	async function add(index: any) {
+		let copyData: any = [...data]
 		copyData[index] = {
 			value: {
 				...value
@@ -50,7 +51,7 @@ export function DataTableToolbar<TData>({
 			valueId: uuidv4()
 		}
 		console.log(copyData)
-		setData([...copyData])
+		setData([...copyData] as any)
 	}
 
 	async function onDelete() {
