@@ -19,8 +19,8 @@ export function UserNav() {
   const { signOut, user } = useClerk()
 
   function AvatarFallbackPic() {
-    const firstName = user?.fullName.split(' ')[0]
-    const lastName = user?.fullName.split(' ')[1]
+    const firstName = user?.fullName?.split(' ')[0]
+    const lastName = user?.fullName?.split(' ')[1]
 
     return (
       <div className="flex items-center justify-center h-full w-full bg-slate-500">
@@ -37,7 +37,7 @@ export function UserNav() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarImage src={user?.imageUrl} alt={user?.fullName} />
+            <AvatarImage src={user?.imageUrl} alt={user?.fullName || ''} />
             <AvatarFallback>{AvatarFallbackPic()}</AvatarFallback>
           </Avatar>
         </Button>
