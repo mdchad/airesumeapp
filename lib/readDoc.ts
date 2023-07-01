@@ -1,6 +1,6 @@
 import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 
-export default async function readDoc(blob) {
+export default async function readDoc(blob: any) {
   try {
 
     const loader = new PDFLoader(
