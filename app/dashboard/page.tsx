@@ -28,49 +28,13 @@ export default function DashboardPage() {
   const { register, handleSubmit } = useForm()
   const inputRef = useRef(null)
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //
-  //   // console.log(files[0])
-  //   console.log(fileNames)
-  //   const formData = createFormData();
-  //   for (const file of files) {
-  //     console.log(file)
-  //     // formData.append('file', file)
-  //     formData.set('new-file', file)
-  //   }
-  //   console.log(formData)
-  //   try {
-  //     const response = await fetch(`/file-upload`, {
-  //       method: "POST",
-  //       headers: {
-  //         'content-type': 'multipart/form-data'
-  //       },
-  //       body: formData,
-  //     })
-  //
-  //     if (response.ok) {
-  //       return (await response.json()) as {
-  //         success: boolean
-  //         chatId: string | null
-  //       }
-  //     }
-  //
-  //     return null
-  //   } catch (e) {
-  //     console.error(e)
-  //
-  //     return null
-  //   }
-  // };
-
   const onSubmit = async (data: any) => {
     const formData = new FormData()
     console.log(data.file[0])
     formData.append('file', data.file[0])
 
     try {
-      const response = await fetch('/file-upload', {
+      const response = await fetch('/api/file-upload', {
         method: 'POST',
         body: formData,
       })
@@ -93,7 +57,7 @@ export default function DashboardPage() {
     <>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="grid w-full max-w-sm items-center gap-1.5">
-          <Label htmlFor="picture">Picture</Label>
+          <Label htmlFor="picture">Upload your resume</Label>
           <Input id="picture" type="file" {...register('file')} />
         </div>
         <Button type="submit">Submit</Button>

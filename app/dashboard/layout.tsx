@@ -20,7 +20,7 @@ export default function DashboardLayout({
 }) {
   return (
     <>
-      <div className="md:hidden">
+      <div className="hidden">
         <Image
           src="/examples/dashboard-light.png"
           width={1280}
@@ -36,7 +36,7 @@ export default function DashboardLayout({
           className="hidden dark:block"
         />
       </div>
-      <div className="hidden flex-col md:flex">
+      <div className="flex-col flex">
         <div className="border-b">
           <div className="flex h-16 items-center px-4">
             {/*<TeamSwitcher />*/}
