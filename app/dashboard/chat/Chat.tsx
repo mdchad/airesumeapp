@@ -10,7 +10,7 @@ import { useToast } from "@/components/ui/use-toast"
 
 interface ChatProps {
     chatId: string
-    onGoToPage: (number) => void
+    onGoToPage: (arg: number) => void
     showPages: boolean
 }
 

@@ -100,7 +100,6 @@ export async function askQuestion(chatId: string, question: string) {
 
 
   const chain = RetrievalQAChain.fromLLM(model, vectorStore.asRetriever(), {
-    k: 5,
     returnSourceDocuments: true,
   })
   const { text: responseText, sourceDocuments } = (await chain.call({
@@ -147,7 +146,6 @@ export async function extractResumeDetails(chatId: string) {
   });
 
   const chain = RetrievalQAChain.fromLLM(model, vectorStore.asRetriever(), {
-    k: 5,
     returnSourceDocuments: true,
   })
 

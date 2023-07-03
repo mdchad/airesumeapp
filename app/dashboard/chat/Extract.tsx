@@ -9,18 +9,6 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/components/ui/use-toast"
 
-interface ChatProps {
-    chatId: string
-    onGoToPage: (number) => void
-    showPages: boolean
-}
-
-interface ChatInteraction {
-    isBot: boolean
-    message: string
-    pages?: number[]
-}
-
 async function extractDetails(chatId: string) {
     try {
         const response = await fetch(`/api/chat-pdf/extract`, {
@@ -46,7 +34,7 @@ async function extractDetails(chatId: string) {
 export function Extract({ chatId }: any) {
     const { toast } = useToast()
     const [processing, setProcessing] = useState(false)
-    const [details, setDetails] = useState('')
+    const [details, setDetails] = useState<Record<any, any>>({})
 
     const onExtractDetails = async () => {
         setProcessing(true)

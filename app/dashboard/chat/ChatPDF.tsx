@@ -11,6 +11,7 @@ import { useToast } from "@/components/ui/use-toast"
 
 import { Chat } from "./Chat"
 import {Extract} from "@/app/dashboard/chat/Extract";
+import {PDFPage} from "@/lib/types";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     "pdfjs-dist/build/pdf.worker.min.js",
@@ -19,7 +20,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 
 const maxFileSize = 20 * 1_000_000
 
-const newChat = async (documents) => {
+const newChat = async (documents: PDFPage[]) => {
     try {
         const response = await fetch(`/api/chat-pdf/new`, {
             method: "POST",
@@ -41,8 +42,8 @@ const newChat = async (documents) => {
     }
 }
 
-async function extractPageText(page) {
-    const textContent = await page.getTextContent()
+async function extractPageText(page: any) {
+    const textContent: any = await page.getTextContent()
 
     let lastY,
         text = ""
@@ -59,7 +60,7 @@ async function extractPageText(page) {
     return text
 }
 
-async function processDocument(document, onTextExtracted: () => void) {
+async function processDocument(document: any, onTextExtracted: () => void) {
     const pages = []
     for (let pageNumber = 1; pageNumber <= document.numPages; pageNumber++) {
         const page = await document.getPage(pageNumber)
@@ -94,7 +95,7 @@ export function ChatPDF() {
         string | null
     >(null)
 
-    async function onDocumentLoadSuccess(document) {
+    async function onDocumentLoadSuccess(document: any) {
         setProgress(0)
         setNumPages(document.numPages)
         const result = await processDocument(document, () => setProgress(20))
