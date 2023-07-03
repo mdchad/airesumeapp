@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import {SignedOut} from "@clerk/nextjs";
 
 export default function Home() {
   return (
@@ -9,12 +10,14 @@ export default function Home() {
         <p className="uppercase font-bold text-3xl">ai resume app</p>
       </div>
       <div className="flex gap-2">
-        <Link href="/sign-in">
-          <Button>Log In</Button>
-        </Link>
-        <Link href="sign-up">
-          <Button>Sign up</Button>
-        </Link>
+        <SignedOut>
+          <Link href="/sign-in">
+            <Button>Log In</Button>
+          </Link>
+          <Link href="sign-up">
+            <Button>Sign up</Button>
+          </Link>
+        </SignedOut>
       </div>
     </main>
   )
