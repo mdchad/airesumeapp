@@ -24,10 +24,10 @@ export function MainNav({
         Resume
       </Link>
       <Link
-        href="/examples/dashboard"
+        href="/dashboard/chat"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
-        Products
+        Chat
       </Link>
       <Link
         href="/examples/dashboard"
