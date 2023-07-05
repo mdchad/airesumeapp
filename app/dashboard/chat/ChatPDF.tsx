@@ -12,6 +12,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { Chat } from "./Chat"
 import {Extract} from "@/app/dashboard/chat/Extract";
 import {PDFPage} from "@/lib/types";
+import {CoverLetter} from "@/app/dashboard/chat/CoverLetter";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     "pdfjs-dist/build/pdf.worker.min.js",
@@ -259,6 +260,11 @@ export function ChatPDF() {
                         )}
                         {chatId && (
                           <Extract
+                            chatId={chatId}
+                          />
+                        )}
+                        {chatId && (
+                          <CoverLetter
                             chatId={chatId}
                           />
                         )}

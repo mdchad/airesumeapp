@@ -3,7 +3,7 @@ import * as fs from "fs/promises"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 import * as path from "path"
-import {createExtractionChainFromZod, VectorDBQAChain, RetrievalQAChain} from "langchain/chains"
+import {createExtractionChainFromZod, RetrievalQAChain} from "langchain/chains"
 import { ChatOpenAI } from "langchain/chat_models/openai"
 import { Document } from "langchain/document"
 import { OpenAIEmbeddings } from "langchain/embeddings/openai"
@@ -12,6 +12,7 @@ import { HNSWLib } from "langchain/vectorstores/hnswlib"
 import { z } from "zod";
 import {StructuredOutputParser} from "langchain/output_parsers";
 import { PromptTemplate } from "langchain/prompts";
+import {HumanChatMessage, SystemChatMessage} from "langchain/schema";
 
 export type PDFPage = {
   textContent: string
@@ -128,7 +129,16 @@ export async function extractResumeDetails(chatId: string) {
     z.object({
       name: z.string().describe("the name of the resume's owner"),
       skills: z.string().describe("the skills stated in the resume"),
-      contact_number: z.string().describe("the contact number"),
+      contact_number: z.string().describe("the contact number of the resume's owner"),
+      email: z.string().describe("the email address of the resume's owner"),
+      years_of_experience: z.string().describe("years of experience calculating from all her professional experience"),
+      education: z.string().describe("the highest education and field of study"),
+      professional_experience: z.array(z.object({
+        title: z.string().describe("the job title of the employment"),
+        period_of_employment: z.string().describe("the period of employment for that job"),
+        employment_achievements: z.string().describe("list of achievements for that particular employment"),
+        company_name: z.string().describe("the name of the company")
+      })).describe("the highest education and field of study"),
     })
   );
 
@@ -142,7 +152,7 @@ export async function extractResumeDetails(chatId: string) {
   });
 
   const input = await prompt.format({
-    question: "Who is this resume belongs to? What are his/her skills? What is the contact number?",
+    question: "Who is this resume belongs to? What are his/her skills? What is the contact number?What is the candidate's highest education and field of study?How many years of experience does the candidate have?Based on the candidate's professional experience, extract the list of employments and grouped it an array based on the job title, the company's name, the period of employment and the achievements for each particular employment",
   });
 
   const chain = RetrievalQAChain.fromLLM(model, vectorStore.asRetriever(), {
@@ -164,5 +174,23 @@ export async function extractResumeDetails(chatId: string) {
   return {
     text: responseText,
     pages,
+  }
+}
+
+export async function generateCoverLetter(chatId: string) {
+  const extractDetails = await extractResumeDetails(chatId)
+  const detailsObject = extractDetails.text
+
+  console.log(JSON.parse(extractDetails.text))
+
+  const chat = await model.call([
+    new SystemChatMessage(
+      "You are a sophisticated career advisor who is helping individuals write cover letters on the basis of their resumes."
+    ),
+    new HumanChatMessage(`Based on the document of the resume details: ${detailsObject} Generate a cover letter for the most pertinent role that can be inferred.`),
+  ])
+
+  return {
+    text: chat.text,
   }
 }
